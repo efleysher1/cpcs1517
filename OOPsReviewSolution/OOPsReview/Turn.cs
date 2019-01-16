@@ -13,7 +13,7 @@ namespace OOPsReview
 		//access the die class?
 		private int mPlayerOne;
 		private int mPlayerTwo;
-		private string Winner;
+		
 
 		//constructor(s)
 		public Turn()
