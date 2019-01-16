@@ -10,20 +10,19 @@ namespace OOPsReview
 	{
 		//data members
 		//store results for both players
-		
+		//access the die class?
 		private int mPlayerOne;
 		private int mPlayerTwo;
+		private string Winner;
 
 		//constructor(s)
 		public Turn()
 		{
-			//mPlayerOne = ;
-			//mPlayerTwo = ;
 		}
 
 		public Turn(int playerOne, int playerTwo)
 		{
-			PlayerOneRoll = playerOne ;
+			PlayerOneRoll = playerOne;
 			PlayerTwoRoll = playerTwo;
 		}
 

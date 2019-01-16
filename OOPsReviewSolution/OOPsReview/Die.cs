@@ -105,7 +105,7 @@ namespace OOPsReview
 		
 		//usually used when there is no need for any internal validation or other 
 		// property logic
-		public int FaceValue { get; set; }
+		public int FaceValue { get; private set; }
 
 
 		//constructor
