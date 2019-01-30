@@ -14,8 +14,10 @@
 
 @if (IsPost)
 {
-	if (language.IsEmpty() || script.IsEmpty())
+	if (string.IsNullOrEmpty(language) || string.IsNullOrEmpty(script))
 	{
+		language = "";
+		script = "";
 		<p><span style="color:firebrick;">Make a selection from both coding and scripting</span></p>
 	}
 	else
