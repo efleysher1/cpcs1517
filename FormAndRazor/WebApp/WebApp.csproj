@@ -113,6 +113,7 @@
     <Content Include="Controls\RadioButtons.cshtml" />
     <Content Include="Controls\CheckBoxes.cshtml" />
     <Content Include="Controls\DropDownList.cshtml" />
+    <Content Include="DBPages\SingleQuery.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -122,6 +123,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="_Menu.cshtml" />
+    <Content Include="WebConnectionStrings.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
