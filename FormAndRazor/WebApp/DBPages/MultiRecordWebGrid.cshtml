@@ -20,7 +20,7 @@
 	//QueryValue returns a single value (not a record) from the  query
 	//this value will be used in titling the WebGrid display
 	//var categoryname = db.QueryValue(scalarcommand, categoryid);
-	var categoryname = db.SingleQuery(scalarcommand, categoryid);
+	var categoryname = db.Query(scalarcommand, categoryid);
 	var querycommand = "SELECT ProductID, ProductName, UnitPrice, UnitsInStock, Discontinued "
 						+ "FROM Products "
 						+ "WHERE CategoryID = @0 "
