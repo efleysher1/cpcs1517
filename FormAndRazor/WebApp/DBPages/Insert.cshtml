@@ -137,24 +137,50 @@
 			<!-- the title attribute creates the tooltip for the control-->
 			<input name="ProductName" id="ProductName" type="text" value="@productname"
 				   title="Product Name." /><br />
-			<select id="SupplierID" name="SupplierID">
-				<option value="0">select ...</option>
-				<!--  loop code here-->
-				@foreach (var supitem in supResults)
+										   <select id="SupplierID" name="SupplierID">
+					<option value="0">select ...</option>
+					<!--  loop code here-->
+			@foreach (var supitem in supResults)
+			{
+				//maintain the selected item in the list
+				// between postings
+				if (supitem[0].ToString() == selectedsupplier)
 				{
-					<option value="@supitem[0]">
-						@supitem[1]
+					<option value="@supitem[0]" selected>
+					@supitem[1]
 					</option>
 				}
-			</select><br />
+				else
+				{	
+
+
+					<option value="@supitem[0]">
+					@supitem[1]
+					</option>
+				}
+			 }
+										   </select><br />
 			<select id="categoryID" name="categoryID">
 				<option value="0">select ...</option>
 				<!--  loop code here-->
 				@foreach (var catitem in catResults)
 				{
-					<option value="@catitem[0]">
-						@catitem[1]
-					</option>
+
+					if (catitem[0].ToString() == selectedcategory)
+					{
+
+
+						<option value="@catitem[0]" selected>
+							@catitem[1]
+						</option>
+					}
+					else
+					{
+						
+						<option value="@catitem[0]">
+							@catitem[1]
+						</option>
+					}
 				}
 			</select><br />
 			<input name="QuantityPerUnit" id="QuantityPerUnit" type="text"
