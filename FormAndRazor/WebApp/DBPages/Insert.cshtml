@@ -15,7 +15,6 @@
 	var selectedcategory = "";
 	var discontinued = "";
 
-
 	var db = Database.Open("NWDB");
 	//get the data for the dropdownlist
 	//this needs to be done prior using the collection
@@ -28,6 +27,25 @@
 				+ "FROM Suppliers "
 				+ "ORDER BY CompanyName ";
 	var supResults = db.Query(supcommand);
+
+
+	//validation controls
+	//these execute on the server side
+	//a particular web field may have multiple validators attached to the field
+	//the validation control refers to a web field by name and contains
+	//	any validators for that control
+	Validation.Add("ProductName", Validator.Required("Product Name is a required field."), Validator.StringLength(40, 1, "Product name must be 40 characters or less."));
+	Validation.Add("QuantityPerUnit", Validator.StringLength(20, 0, "Quantity per unit is limited to 20 characters."));
+	Validation.Add("UnitPrice", Validator.Range(0.00, double.MaxValue, "Unit price cannot be less than zero."));
+	Validation.Add("UnitsInStock", Validator.Range(0.0, 32767.0, "Quantity in stock must be between 0 and 32767"));
+	Validation.Add("UnitsOnOrder", Validator.Range(0.0, 32767.0, "Units on order must be between 0 and 32767"));
+	Validation.Add("ReorderLevel", Validator.Range(0.0, 32767.0, "Reorder level must be between 0 and 32767"));
+
+	//examples
+		//.EqualsTo()
+		//Validation.Add("Password", Validator.EqualsTo("ConfirmPassword" , "Password invalid confirmation"));
+	//pattern matching
+		//Validation.Add("PostalCode", Validator.Required("Postal Code is required") , Validator.Regex("[A-Za-z][0-9][A-Za-z][0-9][A-Za-z][0-9]", "Invalid Postal Code"));
 }
 @section head{
 	<link href="~/Content/MyCustomStyles.css" rel="stylesheet" />
@@ -45,7 +63,6 @@
 			Try/Catch will be used to capture processing errors.
 		</blockquote>
 	</div>
-
 }
 @if (IsPost)
 {
@@ -68,149 +85,176 @@
 		reorderlevel = Request.Form["ReorderLevel"];
 		discontinued = Request.Form["Discontinued"];
 
-		//process incoming data
-		//user friendly error handling
-		try
+		//once you have obtained the data from the form controls,
+		//	you can check the data against your validation controls
+		if (Validation.IsValid())
 		{
 
-			//create sql insert command
-			//note the number and position of placeholders for each supplied field
-			var insertcommand = "INSERT INTO Products(productName, SupplierID, CategoryID, " +
-						" QuantityPerUnit, UnitPrice, UnitsInstock, UnitsOnOrder, " +
-						" ReorderLevel, Discontinued) " +
-						" VALUES( @0, @1, @2, @3, @4, @5, @6, @7, @8)";
+			//process incoming data
+			//user friendly error handling
+			try
+			{
 
-			//execute the insert command
-			//the method used is the .Execute(command string, list of placeholder variables)
-			//ternary operator used for nullable fields
+				//create sql insert command
+				//note the number and position of placeholders for each supplied field
+				var insertcommand = "INSERT INTO Products(productName, SupplierID, CategoryID, " +
+							" QuantityPerUnit, UnitPrice, UnitsInstock, UnitsOnOrder, " +
+							" ReorderLevel, Discontinued) " +
+							" VALUES( @0, @1, @2, @3, @4, @5, @6, @7, @8)";
 
-			//code execution statement here
-			db.Execute(insertcommand, productname,
-			selectedsupplier.Equals("0") ? null : selectedsupplier,
-			selectedcategory.Equals("0") ? null : selectedcategory,
-			string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
-			string.IsNullOrEmpty(unitprice) ? null : unitprice,
-			string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
-			string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
-			string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel,
-			0);
+				//execute the insert command
+				//the method used is the .Execute(command string, list of placeholder variables)
+				//ternary operator used for nullable fields
 
-			//use of bootstrap text positioning
-			//success message
-			<p class="col-sm-11 text-center">
-				<span style="color:green">
+				//code execution statement here
+				db.Execute(insertcommand, productname,
+				selectedsupplier.Equals("0") ? null : selectedsupplier,
+				selectedcategory.Equals("0") ? null : selectedcategory,
+				string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
+				string.IsNullOrEmpty(unitprice) ? null : unitprice,
+				string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
+				string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
+				string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel,
+				0);
 
-					<strong>
-						New product added to file.
+				//use of bootstrap text positioning
+				//success message
+				<p class="col-sm-11 text-center">
+					<span style="color:green">
 
-					</strong>
-				</span>
-			</p>
+						<strong>
+							New product added to file.
+
+						</strong>
+					</span>
+				</p>
+			}
+			catch (Exception ex)
+			{
+				<p class="col-sm-11 text-center alert-danger alert">
+					<span style="color:firebrick">
+						<strong>
+							@ex.Message
+						</strong>
+					</span>
+				</p>
+			}
 		}
-		catch (Exception ex)
-		{
-			<p class="col-sm-11 text-center alert-danger alert">
-				<span style="color:firebrick">
-					<strong>
-						@ex.Message
-					</strong>
-				</span>
-			</p>
-		}
+
 	}
 }
 
-<form id="theForm" method="post">
-	<div class="row ">
-		<div class="col-sm-5 text-right">
-			<label id="ProductName">Name:</label><br />
-			<label id="SupplierID">Supplier:</label><br />
-			<label id="CategoryID">Category:</label><br />
-			<label id="QuantityPerUnit">Qty/Unit:</label><br />
-			<label id="UnitPrice">Unit Price:</label><br />
-			<label id="UnitsInStock">QOH:</label><br />
-			<label id="UnitsOnOrder">QOO:</label><br />
-			<label id="ReorderLevel">ROL:</label><br />
-			<label id="Discontinued">Disc.:</label><br /><br />
-		</div>
-		<div class="col-sm-5">
-			<!-- the title attribute creates the tooltip for the control-->
-			<input name="ProductName" id="ProductName" type="text" value="@productname"
-				   title="Product Name." /><br />
-										   <select id="SupplierID" name="SupplierID">
+	@* you can display your error messages in a summary group
+		the default display is a bulleted list
+		all associated messages for the validation of the field are printed*@
+	@Html.ValidationSummary()
+	<form id="theForm" method="post">
+		<div class="row ">
+			<div class="col-sm-5 text-right">
+				<label id="ProductName">Name:</label><br />
+				@* validation messages can be placed beside the actual control *@
+				
+				<label id="SupplierID">Supplier:</label><br />
+				<label id="CategoryID">Category:</label><br />
+				<label id="QuantityPerUnit">Qty/Unit:</label><br />
+				<label id="UnitPrice">Unit Price:</label><br />
+				<label id="UnitsInStock">QOH:</label><br />
+				<label id="UnitsOnOrder">QOO:</label><br />
+				<label id="ReorderLevel">ROL:</label><br />
+				<label id="Discontinued">Disc.:</label><br /><br />
+			</div>
+			<div class="col-sm-5">
+				<!-- the title attribute creates the tooltip for the control-->
+				<input name="ProductName" id="ProductName" type="text" value="@productname"
+					   title="Product Name." /> @Html.ValidationMessage("ProductName")
+				<br />
+				<select id="SupplierID" name="SupplierID">
 					<option value="0">select ...</option>
 					<!--  loop code here-->
-			@foreach (var supitem in supResults)
-			{
-				//maintain the selected item in the list
-				// between postings
-				if (supitem[0].ToString() == selectedsupplier)
-				{
-					<option value="@supitem[0]" selected>
-					@supitem[1]
-					</option>
-				}
-				else
-				{	
+					@foreach (var supitem in supResults)
+					{
+						//maintain the selected item in the list
+						// between postings
+						if (supitem[0].ToString() == selectedsupplier)
+						{
+							<option value="@supitem[0]" selected>
+								@supitem[1]
+							</option>
+						}
+						else
+						{
 
 
-					<option value="@supitem[0]">
-					@supitem[1]
-					</option>
-				}
-			 }
-										   </select><br />
-			<select id="categoryID" name="categoryID">
-				<option value="0">select ...</option>
-				<!--  loop code here-->
-				@foreach (var catitem in catResults)
-				{
-
-					if (catitem[0].ToString() == selectedcategory)
+							<option value="@supitem[0]">
+								@supitem[1]
+							</option>
+						}
+					}
+				</select><br />
+				<select id="categoryID" name="categoryID">
+					<option value="0">select ...</option>
+					<!--  loop code here-->
+					@foreach (var catitem in catResults)
 					{
 
+						if (catitem[0].ToString() == selectedcategory)
+						{
 
-						<option value="@catitem[0]" selected>
-							@catitem[1]
-						</option>
+
+							<option value="@catitem[0]" selected>
+								@catitem[1]
+							</option>
+						}
+						else
+						{
+
+							<option value="@catitem[0]">
+								@catitem[1]
+							</option>
+						}
 					}
-					else
-					{
-						
-						<option value="@catitem[0]">
-							@catitem[1]
-						</option>
-					}
-				}
-			</select><br />
-			<input name="QuantityPerUnit" id="QuantityPerUnit" type="text"
-				   value="@quantityperunit" /><br />
-			<input name="UnitPrice" id="UnitPrice" type="number" value="@unitprice"
-				   step="0.01" min="0.00" /><br />
-			<input name="UnitsInStock" id="UnitsInStock" type="number" value="@unitsinstock"
-				   step="1" min="0" title="Quantity on Hand." /><br />
-			<input name="UnitsOnOrder" id="UnitsOnOrder" type="text" value="@unitsonorder"
-				   step="1" min="0" title="Quantity on Order." /><br />
-			<input name="ReorderLevel" id="ReorderLevel" type="text" value="@reorderlevel"
-				   step="1" min="0" title="Reorder Level." /><br />
-			<input name="Discontinued" id="Discontinued" type="checkbox"
-				   title="Product is discontinued if checked."
-				   @(string.IsNullOrEmpty(discontinued) ? "" : "checked") /><br /><br />
+				</select><br />
+				<input name="QuantityPerUnit" id="QuantityPerUnit" type="text"
+					   value="@quantityperunit" />
+				
+				<br />
+				<input name="UnitPrice" id="UnitPrice" type="text" value="@unitprice" /><br />
+				<input name="UnitsInStock" id="UnitsInStock" type="text" value="@unitsinstock"
+					   title="Quantity on Hand." /><br />
+				<input name="UnitsOnOrder" id="UnitsOnOrder" type="text" value="@unitsonorder"
+					   title="Quantity on Order." /><br />
+				<input name="ReorderLevel" id="ReorderLevel" type="text" value="@reorderlevel"
+					   title="Reorder Level." /><br />
+
+				@*<input name="UnitPrice" id="UnitPrice" type="number" value="@unitprice"
+			   step="0.01" min="0.00" /><br />
+		<input name="UnitsInStock" id="UnitsInStock" type="number" value="@unitsinstock"
+			   step="1" min="0" title="Quantity on Hand." /><br />
+		<input name="UnitsOnOrder" id="UnitsOnOrder" type="text" value="@unitsonorder"
+			   step="1" min="0" title="Quantity on Order." /><br />
+		<input name="ReorderLevel" id="ReorderLevel" type="text" value="@reorderlevel"
+			   step="1" min="0" title="Reorder Level." /><br />*@
+
+				<input name="Discontinued" id="Discontinued" type="checkbox"
+					   title="Product is discontinued if checked."
+					   @(string.IsNullOrEmpty(discontinued) ? "" : "checked") /><br /><br />
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-11 text-center">
-			<button type="submit" name="formButton" value="submit"
-					class="btn btn-primary" style="width:90px">
-				Add
-			</button>&nbsp;&nbsp;
-			<button type="submit" name="formButton" value="reset"
-					class="btn " style="width:90px">
-				Clear
-			</button>
+		<div class="row">
+			<div class="col-sm-11 text-center">
+				<button type="submit" name="formButton" value="submit"
+						class="btn btn-primary" style="width:90px">
+					Add
+				</button>&nbsp;&nbsp;
+				
+				<!--the attribute formnovalidate suppresses validation on the button activation-->
+				<button type="submit" name="formButton" value="reset"
+						class="btn " style="width:90px" formnovalidate>
+					Clear
+				</button>
+			</div>
 		</div>
-	</div>
-</form>
-@section footer{
-	&copy; CPSC1517 Nait, all rights reserved
-}
+	</form>
+	@section footer{
+		&copy; CPSC1517 Nait, all rights reserved
+	}
