@@ -140,7 +140,25 @@ namespace WebApp.SamplePages
 
         protected void InputButtonChoice_Click(object sender, EventArgs e)
         {
-            //string inputchoice = CollectionList;
+            //string submitchoice = CollectionList;
+            //ensure that the user has seleted a course
+            //if(CollectionList.SelectedIndex ==0){messagelabel.text = "select a course"}
+            //else{RadioButtonListChoice.SelectedValue = submitchoice;
+            //}
+
+            /* if (submitchoice.Equals("2") || submitchoice.Equals("3"))
+                        {
+                            CheckBoxChoice.Checked = true;
+                        }
+                        else
+                        {
+                            CheckBoxChoice.Checked = false;
+                        }*/
+
+            //DisplayReadOnly.Text = CollectionList.SelectedItem.Text + " at index " + CollectionList.SelectedIndex + 
+            //                  " has a value of " + CollectionList.SelectedValue;
+
         }
     }
 }
+
