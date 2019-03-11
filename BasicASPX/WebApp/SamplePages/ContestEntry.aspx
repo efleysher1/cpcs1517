@@ -16,7 +16,51 @@
 
         </div>
     </div>
-  
+    <asp:RequiredFieldValidator ID="RequiredFieldFirstName" runat="server" ControlToValidate="FirstName" 
+        ErrorMessage="First name is required" Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator>
+
+    <asp:RequiredFieldValidator ID="RequiredFieldLastName" runat="server" ControlToValidate="LastName" 
+        ErrorMessage="Last name is required" Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator>
+
+    <asp:RequiredFieldValidator ID="RequiredFieldStreetAddress1" runat="server" ControlToValidate="StreetAddress1" 
+        ErrorMessage="Street address is required" Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator>
+
+    <asp:RequiredFieldValidator ID="RequiredFieldCity" runat="server" ControlToValidate="City" 
+        ErrorMessage="City is required" Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator>
+
+    <asp:RequiredFieldValidator ID="RequiredFieldPostalCode" runat="server" ControlToValidate="PostalCode" 
+        ErrorMessage="Postal Code is required" Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator>
+
+    <asp:RequiredFieldValidator ID="RequiredFieldEmail" runat="server" ControlToValidate="EmailAddress" 
+        ErrorMessage="Email is required" Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator> 
+
+    <asp:RequiredFieldValidator ID="RequiredFieldCheckAnswer" runat="server" ControlToValidate="CheckAnswer" 
+        ErrorMessage="Please enter an answer in the skill check question." Display="None" SetFocusOnError="true" ForeColor="Firebrick"></asp:RequiredFieldValidator>
+    <%-- there is no field to demonstrate a Range Validation within this form
+        the street address2 will be used for this demonstration--%>
+    <asp:RangeValidator ID="RangeStreetAddress2" runat="server" ErrorMessage="Enter 1 to 5 according to liking (1 strongly like, 5 strongly dislike)" 
+         ControlToValidate="StreetAddress2" Display="None" SetFocusOnError="true" ForeColor="Firebrick"
+        Type="Integer" MaximumValue="5" MinimumValue="1"></asp:RangeValidator>
+
+    <asp:RegularExpressionValidator ID="RegularExpressionPostalCode" runat="server" ErrorMessage="Invalid postal code." ControlToValidate="PostalCode"
+         SetFocusOnError="true" ForeColor="Firebrick" Display="None" ValidationExpression="[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]"></asp:RegularExpressionValidator>
+
+    <%-- sample of a datatype check using Compare --%>
+   <%-- <asp:CompareValidator ID="CompareCheckAnswer" runat="server" ErrorMessage="Skill testing answer is not a number" ControlToValidate="CheckAnswer"
+        Display="None" SetFocusOnError="true" ForeColor="Firebrick" Type="Integer" Operator="DataTypeCheck"></asp:CompareValidator>--%>
+
+    <%-- sample of a constant value using compare --%>
+<%--    <asp:CompareValidator ID="CompareCheckAnswer" runat="server" ErrorMessage="Skill testing answer is not a number" ControlToValidate="CheckAnswer"
+        Display="None" SetFocusOnError="true" ForeColor="Firebrick" Type="Integer" Operator="Equal" ValueToCompare="15"></asp:CompareValidator>--%>
+
+    <%-- sample of comparing two fields using compare
+        we don't have any fields to test, assume a password field--%>
+    <%--<asp:CompareValidator ID="ComparePassword" runat="server" ErrorMessage="Confirmation password is not the same" ControlToValidate="ConfirmPassword"
+        Display="None" SetFocusOnError="true" ForeColor="Firebrick" Type="String" Operator="Equal"  ControlToCompare="Password"></asp:CompareValidator>--%>
+
+    <%-- Display all errors in one place using the ValidationSummary Control --%>
+    <asp:ValidationSummary ID="ValidationContestEntry" runat="server" HeaderText="Please fix the following errors and retry." CssClass="alert alert-danger"/>
+
     <div class="row">
         <div class ="col-md-6">
             <fieldset class="form-horizontal">
@@ -79,17 +123,19 @@
                 Add 240<br />
                 Divide by 11<br />
                 Subtract 15<br />
-                <asp:TextBox ID="CheckAnswer" runat="server" ></asp:TextBox>
+                <asp:TextBox ID="CheckAnswer" runat="server" TextMode="Number"></asp:TextBox>
             </p>
         </div>
         <div class="col-md-6">   
             <div class="col-md-offset-2">
                 <p>
-                    <asp:Button ID="Submit" runat="server" Text="Submit" />&nbsp;&nbsp;
-                    <asp:Button ID="Clear" runat="server" Text="Clear" CausesValidation="true"  />
+                    <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />&nbsp;&nbsp;
+                    <asp:Button ID="Clear" runat="server" Text="Clear" CausesValidation="true" OnClick="Clear_Click"  />
                 </p>
                 <asp:Label ID="Message" runat="server" ></asp:Label><br />
-            
+                <br />
+                <hr style="width:5px;" />
+                <asp:GridView ID="EntryList" runat="server"></asp:GridView>
             </div>
         </div>
     </div>
