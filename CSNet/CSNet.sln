@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{6536453B-338D-4CDA-A1FC-74C9E7E7A1C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindSystem", "NorthwindSystem\NorthwindSystem.csproj", "{E828AF8F-8A84-4CC3-B46F-01A000518574}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthwindSystem", "NorthwindSystem\NorthwindSystem.csproj", "{E828AF8F-8A84-4CC3-B46F-01A000518574}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindData", "NorthwindData\NorthwindData.csproj", "{CD0E865F-899F-42A3-BEA6-A7213EF34ABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthwindData", "NorthwindData\NorthwindData.csproj", "{CD0E865F-899F-42A3-BEA6-A7213EF34ABD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

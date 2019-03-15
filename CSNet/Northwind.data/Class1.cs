@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NorthwindData
+namespace Northwind.data
 {
     public class Class1
     {
