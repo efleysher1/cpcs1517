@@ -59,6 +59,55 @@ namespace WebApp.SamplePages
             }
         }
 
-       
+        protected void Submit_Click(object sender, EventArgs e)
+        {
+            //ensure a selection was made
+            if (CategoryList.SelectedIndex == 0)
+            {
+                MessageLabel.Text = "Select a category of products to view!";
+            }
+            else
+            {
+                //within user friendly error handling
+                try
+                {
+                    //  connect to the appropriate controller
+                    ProductController sysmgr = new ProductController();
+                    //  issue a request to the controller's appropriate method
+                    List<Product> datainfo = sysmgr.Product_GetByCategory(int.Parse(CategoryList.SelectedValue));
+                    //  check results 
+                    if (datainfo.Count() == 0)
+                    {
+
+                        //  none: (.count() == 0): message to user 
+                        MessageLabel.Text = "No products for the selected category were found.";
+                        //optionally clear out display
+                        CategoryList.ClearSelection();
+                        CategoryProductList.DataSource = null;
+                    }
+                    else
+                    {
+                        //  found: load a gridview
+                        datainfo.Sort((x, y) => x.ProductName.CompareTo (y.CategoryID) );
+                        CategoryProductList.DataSource = datainfo;
+                        CategoryProductList.DataBind();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageLabel.Text = ex.Message;
+                }
+               
+            }
+            
+        }
+
+        protected void Clear_Click(object sender, EventArgs e)
+        {
+            CategoryList.ClearSelection();
+            CategoryProductList.DataSource = null;
+            CategoryProductList.DataBind();
+        }
     }
 }
