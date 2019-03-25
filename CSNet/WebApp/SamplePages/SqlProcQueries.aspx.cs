@@ -109,5 +109,92 @@ namespace WebApp.SamplePages
             CategoryProductList.DataSource = null;
             CategoryProductList.DataBind();
         }
+
+        protected void CategoryProductList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            //the e parameter will suppy the new page index that is requested
+            //you must set the grid control page index to this supplied value
+            CategoryProductList.PageIndex = e.NewPageIndex;
+
+            //you must refresh your grid view with a call
+            // to the database
+            ProductController sysmgr = new ProductController();
+            
+            List<Product> datainfo = sysmgr.Product_GetByCategory(int.Parse(CategoryList.SelectedValue));
+
+            try
+            {
+                //  connect to the appropriate controller
+                ProductController symgr = new ProductController();
+                //  issue a request to the controller's appropriate method
+                List<Product> datinfo = symgr.Product_GetByCategory(int.Parse(CategoryList.SelectedValue));
+                //  check results 
+                if (datainfo.Count() == 0)
+                {
+
+                    //  none: (.count() == 0): message to user 
+                    MessageLabel.Text = "No products for the selected category were found.";
+                    //optionally clear out display
+                    CategoryList.ClearSelection();
+                    CategoryProductList.DataSource = null;
+                }
+                else
+                {
+                    //  found: load a gridview
+                    datainfo.Sort((x, y) => x.ProductName.CompareTo(y.CategoryID));
+                    CategoryProductList.DataSource = datainfo;
+                    CategoryProductList.DataBind();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageLabel.Text = ex.Message;
+            }
+
+        }
+
+        protected void CategoryProductList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //this event belongs to the Command Select button
+            //accessing the data is wholly dependent on the type of data display used 
+            //  used in the gridview cell.
+            //there are four different ways to access your data 
+            //  (because there are four ways to set up your gridview cell)
+            //we have used the generic template technique to create 
+            //  our gridview cell contents
+            //templates allow the developer to place web controls
+            //  within each cell
+            //when you access a web control within the gridview cell
+            //  you WILL reference the control type and then use
+            //  the control type access technique
+
+            string productid;
+            string discontinued;
+            string productname;
+
+            //personal style:
+            GridViewRow agvrow = CategoryProductList.Rows[CategoryProductList.SelectedIndex];
+
+            //grab ProductID
+            //syntax
+            // agvrow: this points to the selected gridview row
+            //FindControl("controlidname"): this is the id value on the gridview cell
+            //as controltype: this indicates the type of web control
+            //  within the gridview cell that you are accessing
+            // (xxxxxx).Text : indicates the web control access technique
+            productid = (agvrow.FindControl("ProductID") as Label).Text;
+            productname = (agvrow.FindControl("ProductName") as Label).Text;
+            if ((agvrow.FindControl("Discontinued") as CheckBox).Checked)
+            {
+                discontinued = "discontinued";
+            }
+            else
+            {
+                discontinued = "available";
+            }
+
+            MessageLabel.Text = productname + " ( " + productid + " ) " + "is " + discontinued;
+        }
     }
 }
