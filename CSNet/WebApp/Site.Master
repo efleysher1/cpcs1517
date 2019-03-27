@@ -46,15 +46,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">CSNET</a>
+                    <a class="navbar-brand" runat="server" href="~/">CSNet</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Home</a></li>
                         <li><a runat="server" href="~/About">About</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
-                        <li><a runat="server" href="~/SamplePages/SimpleQueries">Simple Query</a></li>
+                        <li><a runat="server" href="~/SamplePages/SimpleQueries">Simply Query</a></li>
                         <li><a runat="server" href="~/SamplePages/SqlProcQueries">Proc Query</a></li>
+                        <li><a runat="server" href="~/SamplePages/FilterSearches">Filter Searches</a></li>
                     </ul>
                 </div>
             </div>
