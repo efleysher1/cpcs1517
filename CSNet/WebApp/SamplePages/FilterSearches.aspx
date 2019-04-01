@@ -52,6 +52,10 @@
                     <br />
                     <br />
                     <asp:GridView ID="ProductGridViewV1" runat="server">
+                        <EmptyDataTemplate>
+                            <%-- this shows up if there is no code behind (count == 0 type of test) and no data in the selection --%>
+                            No data to show for selected category.
+                        </EmptyDataTemplate>
                     </asp:GridView>
                 </fieldset>
             </asp:View>
