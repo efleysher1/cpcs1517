@@ -55,8 +55,11 @@ namespace NorthwindSystem.Data
         }
         [Range(0.00, double.MaxValue, ErrorMessage ="Unit price must be greater than or equal to 0.00")]
         public decimal? UnitPrice { get; set; }
+        [Range(0.00, Int16.MaxValue, ErrorMessage = "QoH must be greater than or equal to 0.00")]
         public Int16? UnitsInStock { get; set; }
+        [Range(0.00, Int16.MaxValue, ErrorMessage = "QoO must be greater than or equal to 0.00")]
         public Int16? UnitsOnOrder { get; set; }
+        [Range(0.00, Int16.MaxValue, ErrorMessage = "ROL must be greater than or equal to 0.00")]
         public Int16? ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
 

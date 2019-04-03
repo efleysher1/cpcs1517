@@ -164,6 +164,64 @@ namespace NorthwindSystem.BLL
                 return item.ProductID;
             }
         }
+
+        //update will receive an instance of your <T> that contains the
+        //  needed primary key values
+        //the method will return the number of rows affected
+        public int Product_Update(Product item)
+        {
+            using (var context = new NorthwindContext())
+            {
+                //sometimes you may have additional fields
+                //  on your entity that track dates and times
+                //  that the record was altered
+                //these fields should be set by the controller method
+                //  and NOT be altered/set by the application user
+                //assume that our entity has a LastModified Date
+                
+                //item.LastModified = DateTime.Today;
+                
+                //stage
+                context.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                //commit
+                //the value return from the SaveChnges(0 is the number of 
+                //  rows affected by the update
+                return context.SaveChanges();
+            }
+        }
+
+        //only the primary key is actually required for this process
+        public int Product_Delete(int productid)
+        {
+            using (var context = new NorthwindContext())
+            {
+                //physical delete
+                //remove the record from the database
+
+                //find the record on the database
+               // var existing = context.Products.Find(productid);
+                //remove found record
+               // context.Products.Remove(existing);
+                //commit the change and return rows affected
+               // return context.SaveChanges();
+
+                //logical delete
+                //the record is NOT physcially removed from the database
+                //often, a flag of some sort is set on the record
+                //instead of a .Remove, an update is actually done
+
+                //find the record on the database
+                var existing = context.Products.Find(productid);
+                //alter the appropriate field(s) on the record which
+                //  will apply the logical delete
+                existing.Discontinued = true;
+                //an update is done to the record
+                context.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                //commit and return rows affected
+                return context.SaveChanges();
+            }
+
+        }
         #endregion
     }
 }
