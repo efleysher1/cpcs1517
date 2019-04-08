@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 #region Additional Namespaces
-using NorthwindSystem.Data; //obtains the <T> devinitions
+using NorthwindSystem.Data; //obtains the <T> definitions
 using NorthwindSystem.DAL;  //obtains the context class
 #endregion
 
