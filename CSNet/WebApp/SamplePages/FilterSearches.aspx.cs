@@ -124,6 +124,7 @@ namespace WebApp.NorthwindPages
             int index = Int32.Parse(e.Item.Value);
             MultiView1.ActiveViewIndex = index;
         }
+   
 
         protected void CategoryList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -140,20 +141,20 @@ namespace WebApp.NorthwindPages
                 {
                     ProductController sysmgr = new ProductController();
                     List<Product> info = sysmgr.Product_GetByCategory(int.Parse(CategoryList.SelectedValue));
-                    if (info.Count == 0)
-                    {
-                        errormsgs.Add("No data found for the partial product name search");
-                        LoadMessageDisplay(errormsgs, "alert alert-info");
-                    }
-                    else
-                    {
+                    //if (info.Count == 0)
+                    //{
+                    //    errormsgs.Add("No data found for the partial product name search");
+                    //    LoadMessageDisplay(errormsgs, "alert alert-info");
+                    //}
+                    //else
+                    //{
                         info.Sort((x, y) => x.ProductName.CompareTo(y.ProductName));
                        
                         //GridView
                         ProductGridViewV1.DataSource = info;
                         ProductGridViewV1.DataBind();
 
-                    }
+                    //}
                 }
                 catch (Exception ex)
                 {

@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <div class="alert alert-warning">
             <blockquote style="font-style: italic">
-                This illustrates a single web form page CRUD maintenance. 
+                TThis illustrates a single web form page CRUD maintenance. 
                 This form will use basic bootstrap formatting
             </blockquote>
         </div>
@@ -18,8 +18,8 @@
          <div class="col-md-12"> 
              <asp:Label ID="Label5" runat="server" Text="Select a Product"></asp:Label>&nbsp;&nbsp;
              <asp:DropDownList ID="ProductList" runat="server"></asp:DropDownList>&nbsp;&nbsp;
-             <asp:LinkButton ID="Search" runat="server" Font-Size="X-Large" >Search</asp:LinkButton>&nbsp;&nbsp;
-             <asp:LinkButton ID="Clear" runat="server" Font-Size="X-Large" >Clear</asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="Search" runat="server" Font-Size="X-Large" OnClick="Search_Click" >Search</asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="Clear" runat="server" Font-Size="X-Large" OnClick="Clear_Click" >Clear</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="AddProduct" runat="server" Font-Size="X-Large" OnClick="AddProduct_Click" >Add</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="UpdateProduct" runat="server" Font-Size="X-Large" OnClick="UpdateProduct_Click" >Update</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="RemoveProduct" runat="server" Font-Size="X-Large" OnClick="RemoveProduct_Click" >Remove</asp:LinkButton>&nbsp;&nbsp;

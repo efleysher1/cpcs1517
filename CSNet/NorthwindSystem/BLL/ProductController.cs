@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using NorthwindSystem.Data; //obtains the <T> devinitions
 using NorthwindSystem.DAL;  //obtains the context class
 using System.Data.SqlClient;   //required for parameter used in Sql Proc calls
-using System.ComponentModel;
 #endregion
 
 namespace NorthwindSystem.BLL
@@ -20,7 +19,6 @@ namespace NorthwindSystem.BLL
     //   needs to get to the Northwind database)
     //this class is the enter point into the Northwind system
     //this class needs to be public
-    [DataObject]
     public class ProductController
     {
         //this method will receive a value that
@@ -65,7 +63,6 @@ namespace NorthwindSystem.BLL
         //  to our class
         //input: category id
         //output: List<Product> matching category id
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<Product> Product_GetByCategory(int categoryid)
         {
             using (var context = new NorthwindContext())
@@ -136,59 +133,62 @@ namespace NorthwindSystem.BLL
             }
         }
 
-        #region Insert, Update, and Delete of CRUD
-            //returning the new identity primary key is optional
+        #region Insert, Update and Delete of CRUD
+        //returning the new identity primary key value is optionally
         public int Product_Add(Product item)
         {
             //the web page will create an instance of the Product entity
-            //  and load the incoming web page data into the instance
+            //    and load the incoming web page data into the instance
             using (var context = new NorthwindContext())
             {
-                //step 1 = staging
+                //step 1) Staging
                 //assign the incoming product instance to its appropriate
-                //  DbSet<T>
-                //the instance will NOT be placed on the database at this time
-                //therefore, the primary key value will NOT be available for use
+                //   DbSet<T>
+                //the instance will NOT be placed on the database at this
+                //   point in time
+                //therefore the primary key value will NOT be available
                 context.Products.Add(item);
 
-                //step 2 = commit
-                //during this step, the data instance will be placed on the database
+                //step 2 Commit
+                //during this step the data instance will be placed on the
+                //    database
                 //if the committing command in this method is NOT executed
-                //  the staged instance will be rolled back.
+                //    the staged instance will be rollback
                 //this code is being executed within a transaction
-                //successful execution of the committing command will 
-                //  be a commit to the transaction
-                //if the transaction is committed, the new primary
-                //  key will be in your instance
-                //during this command execution, any entity validation annotation
-                //  is executed
+                //successful execution of the committing command will be
+                //    a commit to the transaction
+                //if the transaction is committed, the new primary key
+                //    will be in your instance
+                //during this command execution, any entity validation 
+                //    annotation is executed
                 context.SaveChanges();
-                //optionally, this method will return the new primary key value
+
+                //optionally this method is returning the new primary key value
                 return item.ProductID;
             }
         }
 
-        //update will receive an instance of your <T> that contains the
-        //  needed primary key values
+        //update will receive an instance <T> that contains
+        //    the needed primary key values
         //the method will return the number of rows affected
         public int Product_Update(Product item)
         {
             using (var context = new NorthwindContext())
             {
-                //sometimes you may have additional fields
-                //  on your entity that track dates and times
-                //  that the record was altered
-                //these fields should be set by the controller method
-                //  and NOT be altered/set by the application user
-                //assume that our entity has a LastModified Date
-                
-                //item.LastModified = DateTime.Today;
-                
+                //sometimes, you may have additional fields
+                //   on your entity that track dates and times
+                //   that the record was altered
+                //these fields should be set by the controller
+                //   method and NOT be alter/set by the application
+                //   user
+                //assume that our entity has a LastModified date
+                //item.LastModified = DateTime.Now;
+
                 //stage
                 context.Entry(item).State = System.Data.Entity.EntityState.Modified;
                 //commit
-                //the value return from the SaveChnges(0 is the number of 
-                //  rows affected by the update
+                //the value return from the SaveChanges() is the
+                //   number of row affected by the update
                 return context.SaveChanges();
             }
         }
@@ -199,31 +199,28 @@ namespace NorthwindSystem.BLL
             using (var context = new NorthwindContext())
             {
                 //physical delete
-                //remove the record from the database
-
-                //find the record on the database
-               // var existing = context.Products.Find(productid);
-                //remove found record
-               // context.Products.Remove(existing);
-                //commit the change and return rows affected
-               // return context.SaveChanges();
+                //removal of the record from the database
+                //Find the record on the database
+                //var existing = context.Products.Find(productid);
+                //Remove found record
+                //context.Products.Remove(existing);
+                //commit and return rows affected
+                //return context.SaveChanges();
 
                 //logical delete
-                //the record is NOT physcially removed from the database
-                //often, a flag of some sort is set on the record
+                //the record is NOT physically removed from the database
+                //usually a flag of some sort is set on the record
                 //instead of a .Remove, an update is actually done
-
-                //find the record on the database
+                //Find the record on the database
                 var existing = context.Products.Find(productid);
                 //alter the appropriate field(s) on the record which
-                //  will apply the logical delete
+                //   will apply the logical delete
                 existing.Discontinued = true;
                 //an update is done to the record
                 context.Entry(existing).State = System.Data.Entity.EntityState.Modified;
                 //commit and return rows affected
                 return context.SaveChanges();
             }
-
         }
         #endregion
     }
