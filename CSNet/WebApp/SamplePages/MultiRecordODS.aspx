@@ -17,8 +17,12 @@
     <div class="row">
         <asp:Literal ID="Literal1" runat="server" Text="Categories:"></asp:Literal>
         &nbsp;&nbsp;
-        <asp:DropDownList ID="CategoryList" runat="server" DataSourceID="CategoryListODS" DataTextField="CategoryName" DataValueField="CategoryID" AppendDataBoundItems="True">
-            <asp:ListItem Value="0">select . . . </asp:ListItem>
+        <asp:DropDownList ID="CategoryList" runat="server" 
+            DataSourceID="CategoryListODS"
+            DataTextField="CategoryName"
+            DataValueField="CategoryID"
+            AppendDataBoundItems="True">
+        <asp:ListItem Value="0">select ...</asp:ListItem>    
         </asp:DropDownList>
         &nbsp;&nbsp;
         <asp:LinkButton ID="FetchCategoryProducts" runat="server">Fetch</asp:LinkButton>
@@ -45,11 +49,15 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="Supplier">
                     <ItemTemplate>
-                       <%--<asp:Label ID="SupplierID" runat="server" 
+                      <%-- <asp:Label ID="SupplierID" runat="server" 
                             Text='<%# Eval("SupplierID") %>'></asp:Label>--%>
-                        <asp:DropDownList ID="SupplierListGV" runat="server" 
-                            selectedvalue='<%# Eval("SupplierID") %>' Enabled="false"
-                            DataSourceID="SupplierListODS" DataTextField="CompanyName" DataValueField="SupplierID"></asp:DropDownList>
+                        <asp:DropDownList ID="SupplierListGV" runat="server"
+                            DataSourceID="SupplierListODS"
+                            DataTextField="CompanyName"
+                            DataValueField="SupplierID"
+                             selectedvalue='<%# Eval("SupplierID") %>'
+                             Enabled="false">
+                        </asp:DropDownList>
                     </ItemTemplate>
                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 </asp:TemplateField>
@@ -57,8 +65,13 @@
                     <ItemTemplate>
                          <%--<asp:Label ID="CategoryID" runat="server" 
                             Text='<%# Eval("CategoryID") %>'></asp:Label>--%>
-                        <asp:DropDownList ID="CategoryListGV" runat="server" DataSourceID="CategoryListODS" DataTextField="CategoryName" 
-                            DataValueField="CategoryID" selectedvalue='<%# Eval("CategoryID") %>' Enabled="false"></asp:DropDownList>
+                        <asp:DropDownList ID="CategoryListGV" runat="server" 
+                            DataSourceID="CategoryListODS"
+                            DataTextField="CategoryName"
+                            DataValueField="CategoryID"
+                             selectedvalue='<%# Eval("CategoryID") %>'
+                             Enabled="false">
+                        </asp:DropDownList>
                     </ItemTemplate>
                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 </asp:TemplateField>
@@ -78,21 +91,34 @@
                 </asp:TemplateField>
             </Columns>
             <EmptyDataTemplate>
-                No products for the selected category.
+                No products for selected category.
             </EmptyDataTemplate>
           
         </asp:GridView>
         <br /><br />
         <asp:Label ID="Message" runat="server" ></asp:Label>
     </div>
-    <asp:ObjectDataSource ID="CategoryListODS" runat="server" OldValuesParameterFormatString="original_{0}"
-         SelectMethod="Category_List" TypeName="NorthwindSystem.BLL.CategoryController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="SupplierListODS" runat="server" OldValuesParameterFormatString="original_{0}"
-         SelectMethod="Supplier_List" TypeName="NorthwindSystem.BLL.SupplierController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ProductListODS" runat="server" OldValuesParameterFormatString="original_{0}"
-         SelectMethod="Product_GetByCategory" TypeName="NorthwindSystem.BLL.ProductController" >
-         <SelectParameters>
-             <asp:ControlParameter  ControlID="CategoryList" PropertyName="SelectedValue" Name="categoryid" Type="Int32" DefaultValue="0"/>
-         </SelectParameters>
+    <asp:ObjectDataSource ID="CategoryListODS" runat="server"
+        OldValuesParameterFormatString="original_{0}"
+        SelectMethod="Category_List" 
+        TypeName="NorthwindSystem.BLL.CategoryController">
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="SupplierListODS" runat="server"
+        OldValuesParameterFormatString="original_{0}"
+        SelectMethod="Supplier_List"
+        TypeName="NorthwindSystem.BLL.SupplierController">
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ProductListODS" runat="server"
+        OldValuesParameterFormatString="original_{0}"
+        SelectMethod="Product_GetByCategory"
+        TypeName="NorthwindSystem.BLL.ProductController">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="CategoryList"
+                PropertyName="SelectedValue"
+                DefaultValue="0" 
+                Name="categoryid" 
+                Type="Int32">
+            </asp:ControlParameter>
+        </SelectParameters>
     </asp:ObjectDataSource>
 </asp:Content>

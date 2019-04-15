@@ -125,12 +125,97 @@ namespace WebApp.NorthwindPages
         }
         protected void Search_Click(object sender, EventArgs e)
         {
+            if ( ProductList.SelectedIndex == 0)
+            {
+                errormsgs.Add("Select a product from the list to search");
+                LoadMessageDisplay(errormsgs, "alert alert-info");
+            }
+            else
+            {
+                try
+                {
+                    ProductController sysmgr = new ProductController();
+                    Product datainfo = sysmgr.Product_Get(int.Parse(ProductList.SelectedValue));
+                    if (datainfo == null)
+                    {
+                        errormsgs.Add(ProductList.SelectedItem.Text + " cannot be found. Make another selection");
+                        LoadMessageDisplay(errormsgs, "alert alert-info");
+                        Clear_Click(sender, e);
+                    }
+                    else
+                    {
+                        ProductID.Text = datainfo.ProductID.ToString();
+                        ProductName.Text = datainfo.ProductName;
+                        QuantityPerUnit.Text = string.IsNullOrEmpty(datainfo.QuantityPerUnit)? "" : datainfo.QuantityPerUnit;
+                        UnitPrice.Text = string.IsNullOrEmpty(datainfo.UnitPrice.ToString()) ? "" : string.Format("{0:0.00}",datainfo.UnitPrice);
+                        UnitsInStock.Text = string.IsNullOrEmpty(datainfo.UnitsInStock.ToString()) ? "" : datainfo.UnitsInStock.ToString();
+                        UnitsOnOrder.Text = string.IsNullOrEmpty(datainfo.UnitsOnOrder.ToString()) ? "" : datainfo.UnitsOnOrder.ToString();
+                        ReorderLevel.Text = string.IsNullOrEmpty(datainfo.ReorderLevel.ToString()) ? "" : datainfo.ReorderLevel.ToString();
+                        if (string.IsNullOrEmpty(datainfo.CategoryID.ToString()))
+                        {
+                            CategoryList.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            CategoryList.SelectedValue = datainfo.CategoryID.ToString();
+                        }
+                        if (string.IsNullOrEmpty(datainfo.SupplierID.ToString()))
+                        {
+                            SupplierList.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            SupplierList.SelectedValue = datainfo.SupplierID.ToString();
+                        }
+                        Discontinued.Checked = datainfo.Discontinued;
+                    }
 
+                }
+                catch (DbUpdateException ex)
+                {
+                    UpdateException updateException = (UpdateException)ex.InnerException;
+                    if (updateException.InnerException != null)
+                    {
+                        errormsgs.Add(updateException.InnerException.Message.ToString());
+                    }
+                    else
+                    {
+                        errormsgs.Add(updateException.Message);
+                    }
+                    LoadMessageDisplay(errormsgs, "alert alert-danger");
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            errormsgs.Add(validationError.ErrorMessage);
+                        }
+                    }
+                    LoadMessageDisplay(errormsgs, "alert alert-danger");
+                }
+                catch (Exception ex)
+                {
+                    errormsgs.Add(GetInnerException(ex).ToString());
+                    LoadMessageDisplay(errormsgs, "alert alert-danger");
+                }
+            }
         }
 
         protected void Clear_Click(object sender, EventArgs e)
         {
-
+            ProductID.Text = "";
+            ProductName.Text = "";
+            QuantityPerUnit.Text = "";
+            UnitPrice.Text = "";
+            UnitsInStock.Text = "";
+            UnitsOnOrder.Text = "";
+            ReorderLevel.Text = "";
+            CategoryList.ClearSelection();
+            SupplierList.ClearSelection();
+            ProductList.ClearSelection();
+            Discontinued.Checked = false;
         }
 
         protected void AddProduct_Click(object sender, EventArgs e)

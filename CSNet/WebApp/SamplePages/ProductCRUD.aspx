@@ -18,11 +18,13 @@
          <div class="col-md-12"> 
              <asp:Label ID="Label5" runat="server" Text="Select a Product"></asp:Label>&nbsp;&nbsp;
              <asp:DropDownList ID="ProductList" runat="server"></asp:DropDownList>&nbsp;&nbsp;
-             <asp:LinkButton ID="Search" runat="server" Font-Size="X-Large" OnClick="Search_Click" >Search</asp:LinkButton>&nbsp;&nbsp;
-             <asp:LinkButton ID="Clear" runat="server" Font-Size="X-Large" OnClick="Clear_Click" >Clear</asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="Search" runat="server" Font-Size="X-Large" OnClick="Search_Click" 
+                  CausesValidation="false">Search</asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="Clear" runat="server" Font-Size="X-Large" OnClick="Clear_Click" 
+                  CausesValidation="false">Clear</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="AddProduct" runat="server" Font-Size="X-Large" OnClick="AddProduct_Click" >Add</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="UpdateProduct" runat="server" Font-Size="X-Large" OnClick="UpdateProduct_Click" >Update</asp:LinkButton>&nbsp;&nbsp;
-             <asp:LinkButton ID="RemoveProduct" runat="server" Font-Size="X-Large" OnClick="RemoveProduct_Click" >Remove</asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="RemoveProduct" runat="server" Font-Size="X-Large" OnClick="RemoveProduct_Click"  CausesValidation="false" OnClientClick="return confirm('Are you sure you wish to discontinue this product')">Discontinue</asp:LinkButton>&nbsp;&nbsp;
          
              <br /><br />
              <asp:DataList ID="Message" runat="server">
